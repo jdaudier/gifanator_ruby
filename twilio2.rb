@@ -21,7 +21,7 @@ get '/twilio2' do
   
   return "Please specify a search term." if params[:Body].nil?
 
-  url = "http://api.giphy.com/v1/gifs/search?q=#{search_term.gsub("\n", '')}&api_key=dc6zaTOxFJmzC&limit=1"
+  url = "http://api.giphy.com/v1/gifs/search?q=#{search_term.gsub('+', '-')}&api_key=dc6zaTOxFJmzC&limit=1"
   resp = Net::HTTP.get_response(URI.parse(url))
   buffer = resp.body
   result = JSON.parse(buffer)["data"][0]["bitly_gif_url"]
