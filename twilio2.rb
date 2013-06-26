@@ -40,19 +40,20 @@ search_term = params[:Body]
 
 friends_number = search_term.match(/\d{10}/).to_s #Extract phone # and turns it into a string
 
-if !friends_number.nil? #if there is a friend's number
-  message = @client.account.sms.messages.create(:body => "Jenny please?! I love you <3",
-      :to => friends_number,
-  puts message.sid
-else
-  url = "http://api.giphy.com/v1/gifs/search?q=#{search_term.gsub('friends_number', '').gsub(' ', '-')}&api_key=dc6zaTOxFJmzC&limit=1"
-  resp = Net::HTTP.get_response(URI.parse(url))
-  buffer = resp.body
-  result = JSON.parse(buffer)["data"][0]["bitly_gif_url"]
-  twiml = Twilio::TwiML::Response.new do |r|
-    r.Sms "Click the link for your animated gif! #{result}"
+  if !friends_number.nil? #if there is a friend's number
+    message = @client.account.sms.messages.create(:body => "Jenny please?! I love you <3",
+        :to => friends_number)
+    puts message.sid
+  else #if there is no number
+    url = "http://api.giphy.com/v1/gifs/search?q=#{search_term.gsub('friends_number', '').gsub(' ', '-')}&api_key=dc6zaTOxFJmzC&limit=1"
+    resp = Net::HTTP.get_response(URI.parse(url))
+    buffer = resp.body
+    result = JSON.parse(buffer)["data"][0]["bitly_gif_url"]
+    twiml = Twilio::TwiML::Response.new do |r|
+      r.Sms "Click the link for your animated gif! #{result}"
+    end
+    twiml.text
   end
-  twiml.text
 end
 
 
