@@ -44,15 +44,15 @@ friends_number = search_term.match(/\d{10}/).to_s #Extract phone # and turns it 
         :to => friends_number,
         :from => "+18582249485")
     puts message.sid
-  # else #if there is no number
-  #   url = "http://api.giphy.com/v1/gifs/search?q=#{search_term.gsub('friends_number', '').gsub(' ', '-')}&api_key=dc6zaTOxFJmzC&limit=1"
-  #   resp = Net::HTTP.get_response(URI.parse(url))
-  #   buffer = resp.body
-  #   result = JSON.parse(buffer)["data"][0]["bitly_gif_url"]
-  #   twiml = Twilio::TwiML::Response.new do |r|
-  #     r.Sms "Click the link for your animated gif! #{result}"
-  #   end
-  #   twiml.text
+  else #if there is no number
+    url = "http://api.giphy.com/v1/gifs/search?q=#{search_term.gsub('friends_number', '').gsub(' ', '-')}&api_key=dc6zaTOxFJmzC&limit=1"
+    resp = Net::HTTP.get_response(URI.parse(url))
+    buffer = resp.body
+    result = JSON.parse(buffer)["data"][0]["bitly_gif_url"]
+    twiml = Twilio::TwiML::Response.new do |r|
+      r.Sms "Click the link for your animated gif! #{result}"
+    end
+    twiml.text
   end
 end
 
