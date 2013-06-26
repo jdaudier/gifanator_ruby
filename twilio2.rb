@@ -40,7 +40,7 @@ search_term = params[:Body]
 friends_number = search_term
 # .match(/\d{10}/).to_s #Extract phone # and turns it into a string
 
-  # if !friends_number.nil? #if there is a friend's number
+  if !friends_number.nil? #if there is a friend's number
     message = client.account.sms.messages.create(:body => "Jenny please?! I love you <3",
         :to => friends_number,
         :from => "+18582249485")
@@ -54,7 +54,7 @@ friends_number = search_term
   #     r.Sms "Click the link for your animated gif! #{result}"
   #   end
   #   twiml.text
-  # end
+  end
 end
 
 
