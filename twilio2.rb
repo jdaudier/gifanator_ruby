@@ -12,7 +12,7 @@ account_sid = ENV['ACCOUNT_SID']
 auth_token = ENV['AUTH_TOKEN']
 client = Twilio::REST::Client.new account_sid, auth_token
 
-set :port, 8000
+# set :port, 8000
 
 get '/twilio2' do
   search_term = params[:Body] 
