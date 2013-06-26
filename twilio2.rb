@@ -31,18 +31,18 @@ get '/twilio2' do
 #   twiml.text
 # end
 
-##Send to another user
+#Send to another user
 search_term = params[:Body]
 
-#If there's a 10-digit phone # in the text msg, store that #, and 
-#send gif URL to that number.
+#If there's a 10-digit phone # in the text msg, store that #, and send gif URL to that number.
 #If there's no number, send to user.
 
 friends_number = search_term.match(/\d{10}/).to_s #Extract phone # and turns it into a string
 
   if !friends_number.nil? #if there is a friend's number
     message = @client.account.sms.messages.create(:body => "Jenny please?! I love you <3",
-        :to => friends_number)
+        :to => friends_number,
+        :from => "+18582249485")
     puts message.sid
   else #if there is no number
     url = "http://api.giphy.com/v1/gifs/search?q=#{search_term.gsub('friends_number', '').gsub(' ', '-')}&api_key=dc6zaTOxFJmzC&limit=1"
