@@ -37,8 +37,7 @@ search_term = params[:Body]
 #If there's a 10-digit phone # in the text msg, store that #, and send gif URL to that number.
 #If there's no number, send to user.
 
-friends_number = search_term
-# .match(/\d{10}/).to_s #Extract phone # and turns it into a string
+friends_number = search_term.match(/\d{10}/).to_s #Extract phone # and turns it into a string
 
   if !friends_number.nil? #if there is a friend's number
     message = client.account.sms.messages.create(:body => "Jenny please?! I love you <3",
