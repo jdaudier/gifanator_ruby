@@ -39,7 +39,8 @@ search_term = params[:Body]
 
 friends_number = search_term.match(/\d{10}/).to_s #Extract phone # and turns it into a string
 
-  if friends_number != "" #if there is a friend's number
+  if friends_number == "5127457008"
+  # != "" #if friend's number is not blank
     url = "http://api.giphy.com/v1/gifs/search?q=#{search_term.gsub('friends_number', '').gsub(' ', '-')}&api_key=dc6zaTOxFJmzC&limit=1"
     resp = Net::HTTP.get_response(URI.parse(url))
     buffer = resp.body
