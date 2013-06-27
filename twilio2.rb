@@ -36,7 +36,7 @@ result = JSON.parse(buffer)["data"]["bitly_gif_url"]
     id = JSON.parse(buffer)["data"]["id"]
     result = "http://giphy.com/gifs/#{id}"
     twiml = Twilio::TwiML::Response.new do |r|
-      r.Sms "Confucius says: Man who text number, gets random animated gif! #{result}"
+      r.Sms "Confucius says: Man who text me, gets random animated gif! #{result}"
     end
     twiml.text
   elsif friends_number != "" #if friend's number is not blank
