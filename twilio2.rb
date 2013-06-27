@@ -29,7 +29,7 @@ resp = Net::HTTP.get_response(URI.parse(url))
 buffer = resp.body
 result = JSON.parse(buffer)["data"]["bitly_gif_url"]
 
-  if search_term == "random" || "Random"
+  if search_term == "random" or "Random"
     url = "http://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC"
     resp = Net::HTTP.get_response(URI.parse(url))
     buffer = resp.body
