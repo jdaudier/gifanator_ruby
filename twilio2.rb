@@ -9,9 +9,10 @@ account_sid = ENV['ACCOUNT_SID']
 auth_token = ENV['AUTH_TOKEN']
 client = Twilio::REST::Client.new account_sid, auth_token
 
-#Scenario 1: User text "random" or "Random"
-#Scenario 2: If there's a 10-digit phone # in the text msg, store that #, and send gif URL to that number.
-#Scenario 3: If there's no number in the text msg, send gif to user.
+#Scenario 1: If text msg has the word "random" or "Random", send a random gif URL.
+#Scenario 2: If text msg has the word "random" and includes a 10-digit number, send random gif URL to that number.
+#Scenario 3: If text msg has a 10-digit phone #, send gif URL to that number.
+#Scenario 4: If there's no number in the text msg, send gif to user.
 
 get '/twilio2' do
 #App won't work unless you pass in the search params. 
@@ -37,6 +38,20 @@ result = JSON.parse(buffer)["data"]["bitly_gif_url"]
     result = "http://giphy.com/gifs/#{id}"
     twiml = Twilio::TwiML::Response.new do |r|
       r.Sms "Confucius says: Man who text number, gets random animated gif! #{result}"
+    end
+    twiml.text
+  elsif search_term == "random" && friends_number != ""
+    url = "http://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC"
+    resp = Net::HTTP.get_response(URI.parse(url))
+    buffer = resp.body
+    id = JSON.parse(buffer)["data"]["id"]
+    result = "http://giphy.com/gifs/#{id}"
+    message = client.account.sms.messages.create(:body => "Your friend at this number #{sender} just sent you an animated gif! #{result}",
+        :to => friends_number,
+        :from => "+18582249485")
+    puts message.sid
+    twiml = Twilio::TwiML::Response.new do |r|
+      r.Sms "BOOM! We've just sent your friend this awesome random animated gif! #{result}"
     end
     twiml.text
   elsif friends_number != "" #if friend's number is not blank
