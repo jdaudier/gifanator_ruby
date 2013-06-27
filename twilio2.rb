@@ -9,18 +9,18 @@ account_sid = ENV['ACCOUNT_SID']
 auth_token = ENV['AUTH_TOKEN']
 client = Twilio::REST::Client.new account_sid, auth_token
 
-get '/twilio2' do
-  # search_term = params[:Body] 
-  #App won't work unless you pass in the search params. 
-  #For instance: http://58x5.localtunnel.com/twilio2?Body=channing 
-  
-  return "Send a text message to 858-224-9485 and specify a search term." if params[:Body].nil?
+#Scenario 1: User text "random" or "Random"
+#Scenario 2: If there's a 10-digit phone # in the text msg, store that #, and send gif URL to that number.
+#Scenario 3:If there's no number in the text msg, send gif to user.
 
-#Send to another user
+get '/twilio2' do
+#App won't work unless you pass in the search params. 
+#For instance: http://58x5.localtunnel.com/twilio2?Body=channing 
+
+return "Send a text message to 858-224-9485 and specify a search term." if params[:Body].nil?
+
 search_term = params[:Body]
 sender = params[:From]
-#If there's a 10-digit phone # in the text msg, store that #, and send gif URL to that number.
-#If there's no number, send to user.
 
 friends_number = search_term.match(/\d{10}/).to_s #Extract phone # and turns it into a string
 url = "http://api.giphy.com/v1/gifs/translate?s=#{search_term.gsub(friends_number, '').gsub(' ', '+')}&api_key=dc6zaTOxFJmzC&limit=1"
@@ -29,7 +29,7 @@ resp = Net::HTTP.get_response(URI.parse(url))
 buffer = resp.body
 result = JSON.parse(buffer)["data"]["bitly_gif_url"]
 
-  if search_term == "random" or "Random"
+  if search_term == "random" || "Random"
     url = "http://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC"
     resp = Net::HTTP.get_response(URI.parse(url))
     buffer = resp.body
