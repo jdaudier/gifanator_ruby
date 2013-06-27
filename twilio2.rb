@@ -29,14 +29,14 @@ buffer = resp.body
 result = JSON.parse(buffer)["data"][0]["bitly_gif_url"]
 
   if friends_number != "" #if friend's number is not blank
-    twiml = Twilio::TwiML::Response.new do |r|
-      r.Sms "We've just sent your friend this awesome animated gif! #{result}"
-    end
-    twiml.text
     message = client.account.sms.messages.create(:body => "Your friend just sent you an animated gif! #{result}",
         :to => friends_number,
         :from => "+18582249485")
     puts message.sid
+    twiml = Twilio::TwiML::Response.new do |r|
+      r.Sms "We've just sent your friend this awesome animated gif! #{result}"
+    end
+    twiml.text
   else #if there is no number
     twiml = Twilio::TwiML::Response.new do |r|
       r.Sms "Click the link for your animated gif! #{result}"
