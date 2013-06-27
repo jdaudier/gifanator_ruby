@@ -23,7 +23,8 @@ sender = params[:From]
 #If there's no number, send to user.
 
 friends_number = search_term.match(/\d{10}/).to_s #Extract phone # and turns it into a string
-url = "http://api.giphy.com/v1/gifs/search?q=#{search_term.gsub(friends_number, '').gsub(' ', '+')}&api_key=dc6zaTOxFJmzC&limit=1"
+url = "http://api.giphy.com/v1/gifs/translate?s=#{search_term.gsub(friends_number, '').gsub(' ', '+')}&api_key=dc6zaTOxFJmzC&limit=1"
+# url = "http://api.giphy.com/v1/gifs/search?q=#{search_term.gsub(friends_number, '').gsub(' ', '+')}&api_key=dc6zaTOxFJmzC&limit=1"
 resp = Net::HTTP.get_response(URI.parse(url))
 buffer = resp.body
 result = JSON.parse(buffer)["data"][0]["bitly_gif_url"]
@@ -44,3 +45,4 @@ result = JSON.parse(buffer)["data"][0]["bitly_gif_url"]
     twiml.text
   end
 end
+
