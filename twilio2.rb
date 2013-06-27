@@ -24,7 +24,7 @@ sender = params[:From]
 
 friends_number = search_term.match(/\d{10}/).to_s #Extract phone # and turns it into a string
 url = "http://api.giphy.com/v1/gifs/translate?s=#{search_term.gsub(friends_number, '').gsub(' ', '+')}&api_key=dc6zaTOxFJmzC&limit=1"
-# url = "http://api.giphy.com/v1/gifs/search?q=#{search_term.gsub(friends_number, '').gsub(' ', '+')}&api_key=dc6zaTOxFJmzC&limit=1"
+# not random url = "http://api.giphy.com/v1/gifs/search?q=#{search_term.gsub(friends_number, '').gsub(' ', '+')}&api_key=dc6zaTOxFJmzC&limit=1"
 resp = Net::HTTP.get_response(URI.parse(url))
 buffer = resp.body
 result = JSON.parse(buffer)["data"]["bitly_gif_url"]
