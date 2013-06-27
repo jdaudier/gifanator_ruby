@@ -25,7 +25,7 @@ search_term = params[:Body]
 friends_number = search_term.match(/\d{10}/).to_s #Extract phone # and turns it into a string
 
   if friends_number != "" #if friend's number is not blank
-    url = "http://api.giphy.com/v1/gifs/search?q=#{search_term.gsub('friends_number', '').gsub(' ', '-')}&api_key=dc6zaTOxFJmzC&limit=1"
+    url = "http://api.giphy.com/v1/gifs/search?q=#{search_term.gsub(friends_number, '').gsub(' ', '-')}&api_key=dc6zaTOxFJmzC&limit=1"
     resp = Net::HTTP.get_response(URI.parse(url))
     buffer = resp.body
     # result = JSON.parse(buffer)["data"][0]["bitly_gif_url"]
@@ -34,7 +34,7 @@ friends_number = search_term.match(/\d{10}/).to_s #Extract phone # and turns it 
         :from => "+18582249485")
     puts message.sid
   else #if there is no number
-    url = "http://api.giphy.com/v1/gifs/search?q=#{search_term.gsub('friends_number', '').gsub(' ', '-')}&api_key=dc6zaTOxFJmzC&limit=1"
+    url = "http://api.giphy.com/v1/gifs/search?q=#{search_term.gsub(friends_number, '').gsub(' ', '-')}&api_key=dc6zaTOxFJmzC&limit=1"
     resp = Net::HTTP.get_response(URI.parse(url))
     buffer = resp.body
     result = JSON.parse(buffer)["data"][0]["bitly_gif_url"]
