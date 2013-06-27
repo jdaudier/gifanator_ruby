@@ -19,7 +19,7 @@ get '/twilio2' do
 
 return "Send a text message to 858-224-9485 and specify a search term." if params[:Body].nil?
 
-search_term = params[:Body]
+search_term = params[:Body].downcase
 sender = params[:From]
 
 friends_number = search_term.match(/\d{10}/).to_s #Extract phone # and turns it into a string
