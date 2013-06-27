@@ -33,7 +33,7 @@ result = JSON.parse(buffer)["data"]["bitly_gif_url"]
     url = "http://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC"
     resp = Net::HTTP.get_response(URI.parse(url))
     buffer = resp.body
-    result = JSON.parse(buffer)["data"][0]["bitly_gif_url"]
+    result = JSON.parse(buffer)["data"]["image_original_url"]
     twiml = Twilio::TwiML::Response.new do |r|
       r.Sms "Here's a random animated gif! #{result}"
     end
