@@ -27,7 +27,7 @@ url = "http://api.giphy.com/v1/gifs/translate?s=#{search_term.gsub(friends_numbe
 # url = "http://api.giphy.com/v1/gifs/search?q=#{search_term.gsub(friends_number, '').gsub(' ', '+')}&api_key=dc6zaTOxFJmzC&limit=1"
 resp = Net::HTTP.get_response(URI.parse(url))
 buffer = resp.body
-result = JSON.parse(buffer)["data"][0]["bitly_gif_url"]
+result = JSON.parse(buffer)["data"]["bitly_gif_url"]
 
   if friends_number != "" #if friend's number is not blank
     message = client.account.sms.messages.create(:body => "Your friend at this number #{sender} just sent you an animated gif! #{result}",
