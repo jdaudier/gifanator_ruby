@@ -29,7 +29,16 @@ resp = Net::HTTP.get_response(URI.parse(url))
 buffer = resp.body
 result = JSON.parse(buffer)["data"]["bitly_gif_url"]
 
-  if friends_number != "" #if friend's number is not blank
+  if params[:Body] == ""
+    url = "http://api.giphy.com/v1/gifs/screensaver?api_key=dc6zaTOxFJmzC"
+    resp = Net::HTTP.get_response(URI.parse(url))
+    buffer = resp.body
+    result = JSON.parse(buffer)["data"]["image_original_url"]
+    twiml = Twilio::TwiML::Response.new do |r|
+      r.Sms "Here's a random animated gif! #{result}"
+    end
+    twiml.text
+  elsif friends_number != "" #if friend's number is not blank
     message = client.account.sms.messages.create(:body => "Your friend at this number #{sender} just sent you an animated gif! #{result}",
         :to => friends_number,
         :from => "+18582249485")
@@ -45,4 +54,3 @@ result = JSON.parse(buffer)["data"]["bitly_gif_url"]
     twiml.text
   end
 end
-
