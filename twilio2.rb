@@ -34,7 +34,7 @@ result = JSON.parse(buffer)["data"]["bitly_gif_url"]
     resp = Net::HTTP.get_response(URI.parse(url))
     buffer = resp.body
     id = JSON.parse(buffer)["data"]["id"]
-    result = "http://giphy.com/gifs/12bjQ7uASAaCKk/#{id}"
+    result = "http://giphy.com/gifs/#{id}"
     twiml = Twilio::TwiML::Response.new do |r|
       r.Sms "Here's a random animated gif! #{result}"
     end
