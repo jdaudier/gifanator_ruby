@@ -18,7 +18,7 @@ get '/twilio2' do
 
 #Send to another user
 search_term = params[:Body]
-
+sender = params[:From]
 #If there's a 10-digit phone # in the text msg, store that #, and send gif URL to that number.
 #If there's no number, send to user.
 
@@ -29,7 +29,7 @@ buffer = resp.body
 result = JSON.parse(buffer)["data"][0]["bitly_gif_url"]
 
   if friends_number != "" #if friend's number is not blank
-    message = client.account.sms.messages.create(:body => "Your friend just sent you an animated gif! #{result}",
+    message = client.account.sms.messages.create(:body => "Your friend at this number #{sender} just sent you an animated gif! #{result}",
         :to => friends_number,
         :from => "+18582249485")
     puts message.sid
