@@ -44,6 +44,10 @@ get '/twilio2' do
     twiml.text
   end
 
+  if JSON.parse(buffer)["data"] == []
+    sendtext("What what? Who would search for that? Sorry, no results found! http://gph.is/XIjPNh")
+  end
+
   if search_term == "random"
     sendtext("Confucius says: Man who text me, gets random animated gif! #{random}")
 
@@ -65,9 +69,6 @@ get '/twilio2' do
     sendtext("BOOM! We've just sent your friend this awesome animated gif! #{result}")
     end
   
-  elsif JSON.parse(buffer)["data"] == []
-    sendtext("What what? Who would search for that? Sorry, no results found! http://gph.is/XIjPNh")
-
   else #if there is no number
     sendtext("Click the link for your totally awesome animated gif. Booyah! #{result}")
   end
