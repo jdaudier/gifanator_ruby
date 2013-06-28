@@ -17,7 +17,7 @@ get '/twilio2' do
 #App won't work unless you pass in the search params. 
 #For instance: http://58x5.localtunnel.com/twilio2?Body=channing 
 
-return "Send a text message to 858-224-9485 and specify a search term. Text 'random' if you want a random gif. Add a number in your text to send to a friend." if params[:Body].nil?
+  return "Send a text message to 858-224-9485 and specify a search term. Text 'random' if you want a random gif. Add a number in your text to send to a friend." if params[:Body].nil?
 
   search_term = params[:Body].downcase
   sender = params[:From]
@@ -33,29 +33,54 @@ return "Send a text message to 858-224-9485 and specify a search term. Text 'ran
       resp = Net::HTTP.get_response(URI.parse(url))
       buffer = resp.body
       id = JSON.parse(buffer)["data"]["id"]
-      result = "http://giphy.com/gifs/#{id}"
-      results
+      "http://giphy.com/gifs/#{id}"
+  end
+
+  def sendtext(reply)
+    twiml = Twilio::TwiML::Response.new do |r|
+      r.Sms(reply)
+    end
+    twiml.text
   end
 
   if search_term == "random"
-    random
-    twiml = Twilio::TwiML::Response.new do |r|
-      r.Sms "Confucius says: Man who text me, gets random animated gif! #{result}"
-    end
-    twiml.text
+    sendtext("Confucius says: Man who text me, gets random animated gif! #{random}")
+
+  # elsif search_term == "random" && friends_number != ""
+  #   result = random
+  #   message = client.account.sms.messages.create(:body => "Your friend at this number #{sender} just sent you a random animated gif! #{result}",
+  #       :to => friends_number,
+  #       :from => "+18582249485")
+  #   puts message.sid
+    
+  #   sendtext("BOOM! We've just sent your friend this awesome random animated gif! #{result}")
+
   elsif friends_number != "" #if friend's number is not blank
     message = client.account.sms.messages.create(:body => "Your friend at this number #{sender} just sent you an animated gif! #{result}",
         :to => friends_number,
         :from => "+18582249485")
     puts message.sid
-    twiml = Twilio::TwiML::Response.new do |r|
-      r.Sms "BOOM! We've just sent your friend this awesome animated gif! #{result}"
-    end
-    twiml.text
+    
+    sendtext("BOOM! We've just sent your friend this awesome animated gif! #{result}")
+ 
   else #if there is no number
-    twiml = Twilio::TwiML::Response.new do |r|
-      r.Sms "Click the link for your totally awesome animated gif. Booyah! #{result}"
-    end
-    twiml.text
+    sendtext("Click the link for your totally awesome animated gif. Booyah! #{result}")
   end
 end
+
+
+ # twiml = Twilio::TwiML::Response.new do |r|
+    #   r.Sms "Confucius says: Man who text me, gets random animated gif! #{random}"
+    # end
+    # twiml.text
+
+
+   # twiml = Twilio::TwiML::Response.new do |r|
+    #   r.Sms "Click the link for your totally awesome animated gif. Booyah! #{result}"
+    # end
+    # twiml.text
+
+    #    twiml = Twilio::TwiML::Response.new do |r|
+    #   r.Sms "BOOM! We've just sent your friend this awesome animated gif! #{result}"
+    # end
+    # twiml.text
