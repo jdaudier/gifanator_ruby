@@ -50,12 +50,12 @@ get '/twilio2' do
   elsif friends_number != "" #if friend's number is not blank
     if search_term.include? "random"
     result = random
-    message = client.account.sms.messages.create(:body => "Your friend at this number #{sender} just sent you a RANDOM animated gif! #{result}",
+    message = client.account.sms.messages.create(:body => "You've been animated gif bombed from your friend at this number #{sender}! #{result}",
         :to => friends_number,
         :from => "+18582249485")
     puts message.sid
     
-    sendtext("BOOM! We've just sent your friend this awesome RANDOM animated gif! #{result}")
+    sendtext("NICE! You've just successfully animated gif bombed your friend! #{result}")
     else
     message = client.account.sms.messages.create(:body => "Your friend at this number #{sender} just sent you an animated gif! #{result}",
         :to => friends_number,
