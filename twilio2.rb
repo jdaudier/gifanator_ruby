@@ -35,10 +35,10 @@ get '/twilio2' do
     twiml.text
   end
 
-  if JSON.parse(buffer)["data"] == []
+  if JSON.parse(buffer)["data"].empty?
     sendtext("What what? Who would search for that? Sorry, no results found! http://gph.is/XIjPNh")
   else
-      result = JSON.parse(buffer)["data"]["bitly_gif_url"]
+    result = JSON.parse(buffer)["data"]["bitly_gif_url"]
   end
 
   def random
