@@ -48,7 +48,7 @@ get '/twilio2' do
     sendtext("Confucius says: Man who text me, gets random animated gif! #{random}")
 
   elsif friends_number != "" #if friend's number is not blank
-    if search_term.include? "random"
+    if search_term.include? "random" or "Random"
     result = random
     message = client.account.sms.messages.create(:body => "Your friend at this number #{sender} just sent you a RANDOM animated gif! #{result}",
         :to => friends_number,
