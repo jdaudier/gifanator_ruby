@@ -19,22 +19,26 @@ get '/twilio2' do
 
 return "Send a text message to 858-224-9485 and specify a search term. Text 'random' if you want a random gif. Add a number in your text to send to a friend." if params[:Body].nil?
 
-search_term = params[:Body].downcase
-sender = params[:From]
+  search_term = params[:Body].downcase
+  sender = params[:From]
 
-friends_number = search_term.match(/\d{10}/).to_s #Extract phone # and turns it into a string
-url = "http://api.giphy.com/v1/gifs/translate?s=#{search_term.gsub(friends_number, '').gsub(' ', '+')}&api_key=dc6zaTOxFJmzC&limit=1"
-# not random url = "http://api.giphy.com/v1/gifs/search?q=#{search_term.gsub(friends_number, '').gsub(' ', '+')}&api_key=dc6zaTOxFJmzC&limit=1"
-resp = Net::HTTP.get_response(URI.parse(url))
-buffer = resp.body
-result = JSON.parse(buffer)["data"]["bitly_gif_url"]
+  friends_number = search_term.match(/\d{10}/).to_s #Extract phone # and turns it into a string
+  url = "http://api.giphy.com/v1/gifs/translate?s=#{search_term.gsub(friends_number, '').gsub(' ', '+')}&api_key=dc6zaTOxFJmzC&limit=1"
+  resp = Net::HTTP.get_response(URI.parse(url))
+  buffer = resp.body
+  result = JSON.parse(buffer)["data"]["bitly_gif_url"]
+
+  def random
+      url = "http://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC"
+      resp = Net::HTTP.get_response(URI.parse(url))
+      buffer = resp.body
+      id = JSON.parse(buffer)["data"]["id"]
+      result = "http://giphy.com/gifs/#{id}"
+      results
+  end
 
   if search_term == "random"
-    url = "http://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC"
-    resp = Net::HTTP.get_response(URI.parse(url))
-    buffer = resp.body
-    id = JSON.parse(buffer)["data"]["id"]
-    result = "http://giphy.com/gifs/#{id}"
+    random
     twiml = Twilio::TwiML::Response.new do |r|
       r.Sms "Confucius says: Man who text me, gets random animated gif! #{result}"
     end
