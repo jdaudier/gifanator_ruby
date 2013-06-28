@@ -10,9 +10,9 @@ auth_token = ENV['AUTH_TOKEN']
 client = Twilio::REST::Client.new account_sid, auth_token
 
 #Scenario 1: User text "random" or "Random" and gets a random gif.
-#Scenario 2: User text "random" or "Random" with a 10-digit number, send random gif URL to that number.
-#Scenario 3: User text a search term with a 10-digit number, send gif URL to that number.
-#Scenario 4: If there's no number in the text msg, send gif URL to user.
+#Scenario 2: User text "random" or "Random" with a 10-digit number, send random gif to that number.
+#Scenario 3: User text a search term with a 10-digit number, send gif to that number.
+#Scenario 4: If there's no number in the text msg, send gif to user.
 
 get '/twilio2' do
 #App won't work unless you pass in the search params. 
