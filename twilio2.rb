@@ -36,7 +36,11 @@ get '/twilio2' do
   end
 
   if JSON.parse(buffer)["data"].empty?
-    sendtext("What what? Who would search for that? Sorry, no results found! http://gph.is/XIjPNh")
+    # sendtext("What what? Who would search for that? Sorry, no results found! http://gph.is/XIjPNh")
+    message = client.account.sms.messages.create(:body => "What what? Who would search for that? Sorry, no results found! http://gph.is/XIjPNh",
+        :to => sender,
+        :from => "+18582249485")
+    puts message.sid
   else
     result = JSON.parse(buffer)["data"]["bitly_gif_url"]
   end
