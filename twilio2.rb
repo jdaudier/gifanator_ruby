@@ -27,6 +27,7 @@ get '/twilio2' do
   url = "http://api.giphy.com/v1/gifs/translate?s=#{search_term.gsub(friends_number, '').gsub(' ', '+')}&api_key=dc6zaTOxFJmzC&limit=1"
   resp = Net::HTTP.get_response(URI.parse(url))
   buffer = resp.body
+  result = JSON.parse(buffer)["data"]["bitly_gif_url"]
 
   def sendtext(reply)
     twiml = Twilio::TwiML::Response.new do |r|
@@ -35,16 +36,6 @@ get '/twilio2' do
     twiml.text
   end
 
-  if JSON.parse(buffer)["data"].empty?
-    # sendtext("What what? Who would search for that? Sorry, no results found! http://gph.is/XIjPNh")
-    message = client.account.sms.messages.create(:body => "What what? Who would search for that? Sorry, no results found! http://gph.is/XIjPNh",
-        :to => sender,
-        :from => "+18582249485")
-    puts message.sid
-  else
-    result = JSON.parse(buffer)["data"]["bitly_gif_url"]
-  end
-  
   def random
       url = "http://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC"
       resp = Net::HTTP.get_response(URI.parse(url))
@@ -73,6 +64,12 @@ get '/twilio2' do
     
     sendtext("BOOM! We've just sent your friend this awesome animated gif! #{result}")
     end
+  
+  elsif JSON.parse(buffer)["data"].empty?
+    message = client.account.sms.messages.create(:body => "What what? Who would search for that? Sorry, no results found! http://gph.is/XIjPNh",
+        :to => sender,
+        :from => "+18582249485")
+    puts message.sid
 
   else #if there is no number
     sendtext("Click the link for your totally awesome animated gif. Booyah! #{result}")
