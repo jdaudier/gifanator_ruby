@@ -28,15 +28,6 @@ get '/twilio2' do
   resp = Net::HTTP.get_response(URI.parse(url))
   buffer = resp.body
 
-  if JSON.parse(buffer)["data"].empty?
-    message = client.account.sms.messages.create(:body => "What what? Who would search for that? Sorry, no results found! http://gph.is/XIjPNh",
-        :to => sender,
-        :from => "+18582249485")
-    puts message.sid
-  else
-    result = JSON.parse(buffer)["data"]["bitly_gif_url"]
-  end
-  
   def sendtext(reply)
     twiml = Twilio::TwiML::Response.new do |r|
       r.Sms(reply)
@@ -51,29 +42,37 @@ get '/twilio2' do
       id = JSON.parse(buffer)["data"]["id"]
       "http://giphy.com/gifs/#{id}"
   end
-
-  if search_term == "random"
-    sendtext("Confucius says: Man who text me, gets random animated gif! #{random}")
-
-  elsif friends_number != "" #if friend's number is not blank
-    if search_term.include? "random"
-    result = random
-    message = client.account.sms.messages.create(:body => "Your friend at this number #{sender} just sent you a RANDOM animated gif! #{result}",
-        :to => friends_number,
+  
+  if JSON.parse(buffer)["data"].empty?
+    message = client.account.sms.messages.create(:body => "What what? Who would search for that? Sorry, no results found! http://gph.is/XIjPNh",
+        :to => sender,
         :from => "+18582249485")
     puts message.sid
-    
-    sendtext("NICE! We've just sent your friend this awesome RANDOM animated gif! #{result}")
-    else
-    message = client.account.sms.messages.create(:body => "Your friend at this number #{sender} just sent you an animated gif! #{result}",
-        :to => friends_number,
-        :from => "+18582249485")
-    puts message.sid
-    
-    sendtext("BOOM! We've just sent your friend this awesome animated gif! #{result}")
+  else
+    result = JSON.parse(buffer)["data"]["bitly_gif_url"]
+    if search_term == "random"
+      sendtext("Confucius says: Man who text me, gets random animated gif! #{random}")
+
+    elsif friends_number != "" #if friend's number is not blank
+      if search_term.include? "random"
+      result = random
+      message = client.account.sms.messages.create(:body => "Your friend at this number #{sender} just sent you a RANDOM animated gif! #{result}",
+          :to => friends_number,
+          :from => "+18582249485")
+      puts message.sid
+      
+      sendtext("NICE! We've just sent your friend this awesome RANDOM animated gif! #{result}")
+      else
+      message = client.account.sms.messages.create(:body => "Your friend at this number #{sender} just sent you an animated gif! #{result}",
+          :to => friends_number,
+          :from => "+18582249485")
+      puts message.sid
+      
+      sendtext("BOOM! We've just sent your friend this awesome animated gif! #{result}")
+      end
+
+    else #if there is no number
+      sendtext("Click the link for your totally awesome animated gif. Booyah! #{result}")
     end
-
-  else #if there is no number
-    sendtext("Click the link for your totally awesome animated gif. Booyah! #{result}")
   end
 end
