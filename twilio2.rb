@@ -52,7 +52,7 @@ get '/twilio2' do
   else
     result = JSON.parse(buffer)["data"]["bitly_gif_url"]
     if search_term == "random"
-      sendtext("Confucius says: Man who text me, gets random animated gif! #{random}")
+      sendtext("Confucius says: Man who texts me, gets random animated gif! #{random}")
 
     elsif friends_number != "" #if friend's number is not blank
       if search_term.include? "random"
