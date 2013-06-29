@@ -35,7 +35,7 @@ get '/twilio2' do
     twiml.text
   end
 
-  if JSON.parse(buffer)["meta"]["status"] == 500
+  if JSON.parse(buffer)["meta"]["status"] == 200
     sendtext("What what? Who would search for that? Sorry, no results found! http://gph.is/XIjPNh")
   end
   
