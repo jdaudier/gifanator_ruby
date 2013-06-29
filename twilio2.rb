@@ -64,7 +64,7 @@ get '/twilio2' do
       
       sendtext("NICE! We've just sent your friend this awesome RANDOM animated gif! #{result}")
       else
-      message = client.account.sms.messages.create(:body => "Your friend at this number #{sender} just sent you an animated gif! #{result}",
+      message = client.account.sms.messages.create(:body => "Your friend at this number #{sender} just sent you an awesome animated gif! Well, aren't we special? #{result}",
           :to => friends_number,
           :from => "+18582249485")
       puts message.sid
