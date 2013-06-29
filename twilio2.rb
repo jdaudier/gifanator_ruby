@@ -34,12 +34,12 @@ get '/twilio2' do
     end
     twiml.text
   end
-  
+
   if JSON.parse(buffer)["data"].empty?
     sendtext("What what? Who would search for that? Sorry, no results found! http://gph.is/XIjPNh")
-  else
-    result = JSON.parse(buffer)["data"]["bitly_gif_url"]
   end
+  
+  result = JSON.parse(buffer)["data"]["bitly_gif_url"]
 
   def random
       url = "http://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC"
