@@ -13,6 +13,7 @@ client = Twilio::REST::Client.new account_sid, auth_token
 #Scenario 2: User text "random" or "Random" with a 10-digit number, send random gif to that number.
 #Scenario 3: User text a search term with a 10-digit number, send gif to that number.
 #Scenario 4: If there's no number in the text msg, send gif to user.
+#Scenario 5: If there are no results for the search term, return error msg with funny gif. 
 
 get '/twilio2' do
 #App won't work unless you pass in the search params. 
@@ -42,7 +43,7 @@ get '/twilio2' do
       id = JSON.parse(buffer)["data"]["id"]
       "http://giphy.com/gifs/#{id}"
   end
-  
+
   if JSON.parse(buffer)["data"].empty?
     message = client.account.sms.messages.create(:body => "What what? Who would search for that? Sorry, no results found! http://gph.is/XIjPNh",
         :to => sender,
