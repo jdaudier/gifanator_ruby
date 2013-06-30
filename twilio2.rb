@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'twilio-ruby'
 require 'sinatra'
 require 'net/http'
@@ -15,7 +14,7 @@ client = Twilio::REST::Client.new account_sid, auth_token
 #Scenario 4: If there's no number in the text msg, send gif to user.
 #Scenario 5: If there are no results for the search term, return error msg with funny gif. 
 
-get '/twilio2' do
+get '/' do
 #App won't work unless you pass in the search params. 
 #For instance: http://58x5.localtunnel.com/twilio2?Body=channing 
 
