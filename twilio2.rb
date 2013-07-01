@@ -36,11 +36,11 @@ get '/' do
   end
 
   def random
-      url = "http://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC"
-      resp = Net::HTTP.get_response(URI.parse(url))
-      buffer = resp.body
-      id = JSON.parse(buffer)["data"]["id"]
-      "http://giphy.com/gifs/#{id}"
+    url = "http://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC"
+    resp = Net::HTTP.get_response(URI.parse(url))
+    buffer = resp.body
+    id = JSON.parse(buffer)["data"]["id"]
+    "http://giphy.com/gifs/#{id}"
   end
 
   if JSON.parse(buffer)["data"].empty?
