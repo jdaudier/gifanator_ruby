@@ -2,7 +2,6 @@ require 'twilio-ruby'
 require 'sinatra'
 require 'net/http'
 require 'json'
-# require "awesome_print"
 
 account_sid = ENV['ACCOUNT_SID'] 
 auth_token = ENV['AUTH_TOKEN']
@@ -45,8 +44,8 @@ get '/' do
 
   if JSON.parse(buffer)["data"].empty?
     message = client.account.sms.messages.create(:body => "What what? Who would search for that? Sorry, no results found! http://gph.is/XIjPNh",
-        :to => sender,
-        :from => "+18582249485")
+      :to => sender,
+      :from => "+18582249485")
     puts message.sid
   else
     result = JSON.parse(buffer)["data"]["bitly_gif_url"]
@@ -55,20 +54,20 @@ get '/' do
 
     elsif friends_number != "" #if friend's number is not blank
       if search_term.include? "random"
-      result = random
-      message = client.account.sms.messages.create(:body => "Your friend at this number #{sender} just sent you a RANDOM animated gif! #{result}",
-          :to => friends_number,
-          :from => "+18582249485")
-      puts message.sid
+        result = random
+        message = client.account.sms.messages.create(:body => "Your friend at this number #{sender} just sent you a RANDOM animated gif! #{result}",
+            :to => friends_number,
+            :from => "+18582249485")
+        puts message.sid
       
-      sendtext("NICE! We've just sent your friend this awesome RANDOM animated gif! #{result}")
+        sendtext("NICE! We've just sent your friend this awesome RANDOM animated gif! #{result}")
       else
-      message = client.account.sms.messages.create(:body => "Your friend at this number #{sender} just sent you an awesome animated gif! Well, aren't we special? #{result}",
-          :to => friends_number,
-          :from => "+18582249485")
-      puts message.sid
-      
-      sendtext("BOOM! We've just sent your friend this awesome animated gif! #{result}")
+        message = client.account.sms.messages.create(:body => "Your friend at this number #{sender} just sent you an awesome animated gif! Well, aren't we special? #{result}",
+            :to => friends_number,
+            :from => "+18582249485")
+        puts message.sid
+        
+        sendtext("BOOM! We've just sent your friend this awesome animated gif! #{result}")
       end
 
     else #if there is no number
