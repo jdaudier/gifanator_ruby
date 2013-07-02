@@ -43,7 +43,7 @@ get '/' do
   end
 
   if JSON.parse(buffer)["data"].empty?
-    message = client.account.sms.messages.create(:body => "What what? Who would search for that? Sorry, no results found! http://gph.is/XIjPNh",
+    message = client.account.sms.messages.create(:body => "What what? Who would search for that? Sorry, no results found! Click on the link to see how I feel about that. http://gph.is/XIjPNh",
       :to => sender,
       :from => "+18582249485")
     puts message.sid
